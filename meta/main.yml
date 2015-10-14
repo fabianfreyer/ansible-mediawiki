@@ -1,0 +1,9 @@
+---
+
+
+dependencies:
+- role: nginx_php5-fpm
+  php5_packages:
+  - php5-cli
+
+- role: mysql_server
