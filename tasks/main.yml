@@ -24,10 +24,16 @@
   tags: php
 
 - name: install mediawiki dependencies
-  composer: working_dir=/srv/mediawiki
+  composer: command=install working_dir=/srv/mediawiki
 
 - include: mysql.yml
   when: db.connection == "mysql"
+
+- name: install mediawiki skins
+  git: repo=https://gerrit.wikimedia.org/r/mediawiki/skins/{{item}}
+      dest=/srv/mediawiki/skins/{{item}}
+  with_items:
+  - Vector
 
 - name: install mediawiki
   command: php /srv/mediawiki/maintenance/install.php
@@ -40,12 +46,6 @@
     --scriptpath '{{mediawiki_dir}}'
     {{name}} {{admin_user.name}}
     creates=/srv/mediawiki/LocalSettings.php
-
-- name: install mediawiki skins
-  git: repo=https://gerrit.wikimedia.org/r/mediawiki/skins/{{item}}
-      dest=/srv/mediawiki/skins/{{item}}
-  with_items:
-  - Vector
 
 - name: enable clean URL's
   lineinfile: dest=/srv/mediawiki/LocalSettings.php
