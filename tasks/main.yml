@@ -5,10 +5,22 @@
        dest=/srv/mediawiki
        version={{mediawiki_version|default('HEAD')}}
 
+- name: add composer PPA on Ubuntu
+  apt_repository: repo="ppa:duggan/composer"
+  when: ansible_distribution == 'Ubuntu'
+  tags: php
+
 - name: install composer
   apt: name=composer
        state=present
        default_release='unstable' # Composer is still only in unstable
+  when: ansible_distribution == 'Debian'
+  tags: php
+
+- name: install composer
+  apt: name=composer
+       state=present
+  when: ansible_distribution == 'Ubuntu'
   tags: php
 
 - name: install mediawiki dependencies
