@@ -1,0 +1,7 @@
+---
+
+- src: https://github.com/fabianfreyer/ansible-nginx_php5-fpm.git
+  name: nginx_php5-fpm
+
+- src: https://github.com/fabianfreyer/ansible-mysql_server
+  name: mysql_server
