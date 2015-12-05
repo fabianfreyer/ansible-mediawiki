@@ -3,4 +3,5 @@
 - hosts: all
   remote_user: root
   roles:
-  - ansible-mediawiki
+  - role: ansible-mediawiki
+    server_name: 'localhost'
