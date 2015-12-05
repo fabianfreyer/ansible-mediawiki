@@ -4,6 +4,7 @@
   git: repo=https://gerrit.wikimedia.org/r/p/mediawiki/core.git
        dest=/srv/mediawiki
        version={{mediawiki_version|default('HEAD')}}
+       depth=1
 
 - name: add composer PPA on Ubuntu
   apt_repository: repo="ppa:duggan/composer"
