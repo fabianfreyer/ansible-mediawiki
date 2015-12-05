@@ -44,4 +44,6 @@ server {
     root /srv/mediawiki/local;
     autoindex on;
   }
+
+  location ~ /\.  { deny all; }
 }
