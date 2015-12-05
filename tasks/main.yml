@@ -19,7 +19,7 @@
   tags: php
 
 - name: install composer
-  apt: name=composer
+  apt: name=php5-composer
        state=present
   when: ansible_distribution == 'Ubuntu'
   tags: php
