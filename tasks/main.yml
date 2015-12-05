@@ -25,7 +25,7 @@
   tags: php
 
 - name: install mediawiki dependencies
-  composer: command=install working_dir=/srv/mediawiki
+  shell: composer install --no-dev chdir=/srv/mediawiki
 
 - include: mysql.yml
   when: db.connection == "mysql"
