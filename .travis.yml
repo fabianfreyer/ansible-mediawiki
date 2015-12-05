@@ -32,5 +32,6 @@ script:
   | grep -q 'changed=0.*failed=0'
   && (echo 'Idempotence test: pass' && exit 0)
   || (echo 'Idempotence test: fail' && exit 1)
+- sudo rm -f /etc/nginx/sites-enabled/default && sudo service nginx reload
 - >
-  curl http://mediawiki.$(hostname)/
+  curl http://localhost/Main_Page
