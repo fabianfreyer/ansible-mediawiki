@@ -2,7 +2,7 @@
 
 - name: clone mediawiki
   git: repo=https://gerrit.wikimedia.org/r/p/mediawiki/core.git
-       dest=/srv/mediawiki
+       dest={{ mediawiki_path }}
        version={{mediawiki_version|default('HEAD')}}
        depth=1
 
@@ -25,19 +25,19 @@
   tags: php
 
 - name: install mediawiki dependencies
-  shell: composer install --no-dev chdir=/srv/mediawiki
+  shell: composer install --no-dev chdir={{ mediawiki_path }}
 
 - include: mysql.yml
   when: db.connection == "mysql"
 
 - name: install mediawiki skins
   git: repo=https://gerrit.wikimedia.org/r/mediawiki/skins/{{item}}
-      dest=/srv/mediawiki/skins/{{item}}
+      dest={{ mediawiki_path }}/skins/{{item}}
   with_items:
   - Vector
 
 - name: install mediawiki
-  command: php /srv/mediawiki/maintenance/install.php
+  command: php {{ mediawiki_path }}/maintenance/install.php
     --dbname {{mediawiki_db.name}}
     --dbuser {{mediawiki_db.user}}
     --dbpass {{mediawiki_db.password}}
@@ -46,18 +46,18 @@
     --pass {{admin_user.pass}}
     --scriptpath '{{mediawiki_dir}}'
     {{instance_name}} {{admin_user.name}}
-    creates=/srv/mediawiki/LocalSettings.php
+    creates={{ mediawiki_path }}/LocalSettings.php
 
 - name: enable clean URL's
-  lineinfile: dest=/srv/mediawiki/LocalSettings.php
+  lineinfile: dest={{ mediawiki_path }}/LocalSettings.php
               line='$wgArticlePath = "/$1";'
               regexp='\$wgArticlePath'
 
 
 - name: copy mediawiki configuration
-  template: src=mediawiki.nginx.conf.jinja2 dest=/etc/nginx/sites-available/mediawiki.conf
+  template: src=mediawiki.nginx.conf.jinja2 dest=/etc/nginx/sites-available/{{instance_name}}.conf
   notify: reload nginx
 
 - name: enable mediawiki
-  file: src=/etc/nginx/sites-available/mediawiki.conf dest=/etc/nginx/sites-enabled/mediawiki.conf state=link
+  file: src=/etc/nginx/sites-available/{{instance_name}}.conf dest=/etc/nginx/sites-enabled/{{instance_name}}.conf state=link
   notify: reload nginx

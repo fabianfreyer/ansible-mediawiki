@@ -1,6 +1,6 @@
 server {
   server_name {{ server_name }};
-  root /srv/mediawiki;
+  root {{ mediawiki_path }};
   index index.php;
 
   client_max_body_size 5m;
@@ -41,7 +41,7 @@ server {
   }
 
   location /dumps {
-    root /srv/mediawiki/local;
+    root {{ mediawiki_path }}/local;
     autoindex on;
   }
 
