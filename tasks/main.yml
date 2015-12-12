@@ -24,6 +24,9 @@
   when: ansible_distribution == 'Ubuntu'
   tags: php
 
+- name: install imagemagick
+  apt: name=imagemagick
+
 - name: install mediawiki dependencies
   shell: composer install --no-dev chdir={{ mediawiki_path }}
 
