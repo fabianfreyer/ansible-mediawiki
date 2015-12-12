@@ -1,16 +1,15 @@
 ---
-
+instance_name: 'MediaWiki'
 subdomain: ''
 mediawiki_dir: ''
 server_name: '{% if subdomain %}{{subdomain}}.{% endif %}{{ansible_fqdn}}'
 base_uri: 'http://{{server_name}}/{{mediawiki_dir}}'
 
-name: MediaWiki
 admin_user:
   name: root
   pass: admin
-db:
+mediawiki_db:
   connection: mysql
-  name: mediawiki
+  name: mw_{{instance_name}}
   user: mediawiki
   password: mediawiki

@@ -4,8 +4,8 @@
   apt: name=python-mysqldb
 
 - name: create database
-  mysql_db: name={{db.name}}
+  mysql_db: name={{mediawiki_db.name}}
             login_unix_socket=/var/run/mysqld/mysqld.sock
 
 - name: create database user
-  mysql_user: name={{db.user}} password={{db.password}} priv={{db.name}}.*:ALL
+  mysql_user: name={{mediawiki_db.user}} password={{mediawiki_db.password}} priv={{mediawiki_db.name}}.*:ALL

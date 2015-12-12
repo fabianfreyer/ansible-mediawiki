@@ -38,14 +38,14 @@
 
 - name: install mediawiki
   command: php /srv/mediawiki/maintenance/install.php
-    --dbname {{db.name}}
-    --dbuser {{db.user}}
-    --dbpass {{db.password}}
-    --dbtype {{db.connection}}
+    --dbname {{mediawiki_db.name}}
+    --dbuser {{mediawiki_db.user}}
+    --dbpass {{mediawiki_db.password}}
+    --dbtype {{mediawiki_db.connection}}
     --lang {{language|default('en')}}
     --pass {{admin_user.pass}}
     --scriptpath '{{mediawiki_dir}}'
-    {{name}} {{admin_user.name}}
+    {{instance_name}} {{admin_user.name}}
     creates=/srv/mediawiki/LocalSettings.php
 
 - name: enable clean URL's
