@@ -12,5 +12,5 @@ admin_user:
 mediawiki_db:
   connection: mysql
   name: mw_{{instance_name}}
-  user: mediawiki
+  user: mw_{{instance_name}}
   password: mediawiki
