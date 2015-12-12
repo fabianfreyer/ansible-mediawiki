@@ -1,9 +1,10 @@
 ---
 instance_name: 'MediaWiki'
 subdomain: ''
+hostname: '{{ansible_fqdn}}'
 mediawiki_dir: ''
 mediawiki_path: '/srv/{{instance_name}}'
-server_name: '{% if subdomain %}{{subdomain}}.{% endif %}{{ansible_fqdn}}'
+server_name: '{% if subdomain %}{{subdomain}}.{% endif %}{{hostname}}'
 base_uri: 'http://{{server_name}}/{{mediawiki_dir}}'
 
 admin_user:
