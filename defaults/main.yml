@@ -4,6 +4,7 @@ subdomain: ''
 hostname: '{{ansible_fqdn}}'
 mediawiki_dir: ''
 mediawiki_path: '/srv/{{instance_name}}'
+mediawiki_language: 'en'
 server_name: '{% if subdomain %}{{subdomain}}.{% endif %}{{hostname}}'
 base_uri: 'http://{{server_name}}/{{mediawiki_dir}}'
 

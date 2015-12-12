@@ -42,7 +42,7 @@
     --dbuser {{mediawiki_db.user}}
     --dbpass {{mediawiki_db.password}}
     --dbtype {{mediawiki_db.connection}}
-    --lang {{language|default('en')}}
+    --lang {{mediawiki_language}}
     --pass {{admin_user.pass}}
     --scriptpath '{{mediawiki_dir}}'
     {{instance_name}} {{admin_user.name}}
