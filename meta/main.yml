@@ -1,10 +1,43 @@
 ---
-
+allow_duplicates: yes
 
 dependencies:
 - role: nginx_php5-fpm
   php5_packages:
   - php5-cli
   - php5-mysql
+
+- role: nginx_site
+  nginx_site_hostname: '{{server_name}}'
+  nginx_site_name: '{{server_name}}'
+  nginx_site_use_letsencrypt: True
+  nginx_site_use_ssl: True
+  nginx_site_index_extensions:
+  - php
+  nginx_site_root: '{{mediawiki_path}}'
+  nginx_site_location_rules:
+    "/": "try_files $uri $uri @rewrite;"
+    "@rewrite": "rewrite ^/(.*)$ /index.php;"
+    "^~ /maintenance/": "return 403;"
+    "~\\.php$": |
+      include fastcgi_params;
+      fastcgi_pass unix:/var/run/php5-fpm.sock;
+      fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+      try_files $uri @rewrite;
+    "~* \\.(js|css|png|jpg|jpeg|gif|ico)$": |
+      try_files $uri /index.php;
+      expires max;
+      log_not_found off;
+    "= /_.gif": |
+      expires max;
+      empty_gif;
+    "^~ /cache/": "deny all;"
+    "/dumps": |
+      root {{ mediawiki_path }}/local;
+      autoindex on;
+    "~ /\\.":  "deny all;"
+  nginx_site_tuning:
+    client_max_body_size: 5m
+    client_body_timeout: 60
 
 - role: mysql_server

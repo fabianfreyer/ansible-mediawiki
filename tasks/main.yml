@@ -55,12 +55,3 @@
   lineinfile: dest={{ mediawiki_path }}/LocalSettings.php
               line='$wgArticlePath = "/$1";'
               regexp='\$wgArticlePath'
-
-
-- name: copy mediawiki configuration
-  template: src=mediawiki.nginx.conf.jinja2 dest=/etc/nginx/sites-available/{{instance_name}}.conf
-  notify: reload nginx
-
-- name: enable mediawiki
-  file: src=/etc/nginx/sites-available/{{instance_name}}.conf dest=/etc/nginx/sites-enabled/{{instance_name}}.conf state=link
-  notify: reload nginx
