@@ -31,7 +31,7 @@
   shell: composer install --no-dev chdir={{ mediawiki_path }}
 
 - include: mysql.yml
-  when: db.connection == "mysql"
+  when: mediawiki_db.connection == "mysql"
 
 - name: install mediawiki skins
   git: repo=https://gerrit.wikimedia.org/r/mediawiki/skins/{{item}}
