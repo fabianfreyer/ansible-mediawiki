@@ -5,3 +5,6 @@
 
 - src: https://github.com/fabianfreyer/ansible-mysql_server
   name: mysql_server
+
+- src: https://github.com/fabianfreyer/ansible-nginx_site.git
+  name: nginx_site
