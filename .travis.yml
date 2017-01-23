@@ -1,23 +1,26 @@
 ---
+sudo: required
+dist: trusty
+
 language: "python"
 python:
 - 2.7
 
 env:
-- ANSIBLE_VERSION=1.8
-- ANSIBLE_VERSION=1.8.1
-- ANSIBLE_VERSION=1.8.2
-- ANSIBLE_VERSION=1.8.3
-- ANSIBLE_VERSION=1.8.4
-- ANSIBLE_VERSION=1.9.0.1
-- ANSIBLE_VERSION=1.9.1
-- ANSIBLE_VERSION=1.9.2
-- ANSIBLE_VERSION=1.9.3
-- ANSIBLE_VERSION=1.9.4
+- ANSIBLE_VERSION=2.1
+- ANSIBLE_VERSION=2.2
 
 before_install:
 # Make sure everything's up to date.
 - sudo apt-get update -qq
+
+# Remove MySQL
+- sudo apt-get remove --purge 'mysql*'
+- sudo apt-get autoremove
+- sudo apt-get autoclean
+- sudo rm -rf /var/lib/mysql
+- sudo truncate -s 0 /var/log/mysql/error.log
+
 
 install:
 - pip install ansible==$ANSIBLE_VERSION
