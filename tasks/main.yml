@@ -36,8 +36,7 @@
 - name: install mediawiki skins
   git: repo=https://gerrit.wikimedia.org/r/mediawiki/skins/{{item}}
       dest={{ mediawiki_path }}/skins/{{item}}
-  with_items:
-  - Vector
+  with_items: '{{mediawiki_skins}}'
 
 - name: install mediawiki
   command: php {{ mediawiki_path }}/maintenance/install.php
