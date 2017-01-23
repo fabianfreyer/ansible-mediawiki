@@ -1,41 +1,50 @@
 ---
 
 - name: clone mediawiki
-  git: repo=https://gerrit.wikimedia.org/r/p/mediawiki/core.git
-       dest={{ mediawiki_path }}
-       version={{mediawiki_version|default('HEAD')}}
-       depth=1
+  git:
+    repo: 'https://gerrit.wikimedia.org/r/p/mediawiki/core.git'
+    dest: '{{ mediawiki_path }}'
+    version: "{{mediawiki_version|default('HEAD')}}"
+    depth: 1
 
 - name: add composer PPA on Ubuntu
-  apt_repository: repo="ppa:duggan/composer"
+  apt_repository:
+    repo: "ppa:duggan/composer"
   when: ansible_distribution == 'Ubuntu'
   tags: php
 
 - name: install composer
-  apt: name=composer
-       state=present
-       default_release='unstable' # Composer is still only in unstable
+  apt:
+    name: composer
+    state: present
+    default_release: 'unstable' # Composer is still only in unstable
   when: ansible_distribution == 'Debian'
   tags: php
 
 - name: install composer
-  apt: name=php5-composer
-       state=present
+  apt:
+    name: php5-composer
+    state: present
   when: ansible_distribution == 'Ubuntu'
   tags: php
 
 - name: install imagemagick
-  apt: name=imagemagick
+  apt:
+    name: imagemagick
+    state: present
 
 - name: install mediawiki dependencies
-  shell: composer install --no-dev chdir={{ mediawiki_path }}
+  shell: composer install --no-dev
+  args:
+    chdir: '{{ mediawiki_path }}'
 
 - include: mysql.yml
   when: mediawiki_db.connection == "mysql"
 
 - name: install mediawiki skins
-  git: repo=https://gerrit.wikimedia.org/r/mediawiki/skins/{{item}}
-      dest={{ mediawiki_path }}/skins/{{item}}
+  git:
+    repo: "https://gerrit.wikimedia.org/r/mediawiki/skins/{{item}}"
+    dest: "{{ mediawiki_path }}/skins/{{item}}"
   with_items: '{{mediawiki_skins}}'
 
 - name: install mediawiki
@@ -48,9 +57,11 @@
     --pass {{admin_user.pass}}
     --scriptpath '{{mediawiki_dir}}'
     {{instance_name}} {{admin_user.name}}
-    creates={{ mediawiki_path }}/LocalSettings.php
+  args:
+    creates: '{{ mediawiki_path }}/LocalSettings.php'
 
 - name: enable clean URL's
-  lineinfile: dest={{ mediawiki_path }}/LocalSettings.php
-              line='$wgArticlePath = "/$1";'
-              regexp='\$wgArticlePath'
+  lineinfile:
+    dest: '{{ mediawiki_path }}/LocalSettings.php'
+    line: '$wgArticlePath = "/$1";'
+    regexp: '\$wgArticlePath'
